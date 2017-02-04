@@ -62,4 +62,22 @@ public class TalkerOH {
 
         return baseDadesEscriure.insert(bdAjudant.TABLE_PRODUCTES,null,valors);
     }
+    //metode per fer updates dels camps que deixem que es puguin cambiar
+    public void taskUpdate(long id, String descripcio, double pvp , int stock) {
+        // Modifiquem els valors de las tasca amb clau primària "id"
+        ContentValues valors = new ContentValues();
+        valors.put(bdAjudant.COLUMN_DESCRIPCIO, descripcio);
+        valors.put(bdAjudant.COLUMN_PVP, pvp);
+        valors.put(bdAjudant.COLUMN_STOCK, stock);
+
+        baseDadesEscriure.update(bdAjudant.TABLE_PRODUCTES,valors, bdAjudant.COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
+    }
+
+    public void taskDelete(long id) {
+        // Eliminem la task amb clau primària "id"
+        baseDadesEscriure.delete(bdAjudant.TABLE_PRODUCTES,bdAjudant.COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
+    }
+
+
+
 }

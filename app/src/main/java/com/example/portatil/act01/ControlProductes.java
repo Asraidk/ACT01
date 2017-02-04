@@ -1,5 +1,7 @@
 package com.example.portatil.act01;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,9 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
                 break;
             case R.id.btnCancelar:
                 cancelar();
+                break;
+            case R.id.btnDelete:
+                borrar(id);
                 break;
         }
 
@@ -137,7 +142,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
             task = bd.AfegirProducte(codi, descripcion,PVP,stock);
         }
         else {
-
+            bd.taskUpdate(id,descripcion,PVP,stock);
         }
 
         Intent mIntent = new Intent();
@@ -151,6 +156,18 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         Intent mIntent = new Intent();
         mIntent.putExtra("id", id);
         setResult(RESULT_CANCELED, mIntent);
+
+        finish();
+    }
+
+    private  void borrar(long clauprimaria){
+
+        // Pedimos confirmación
+        bd.taskDelete(clauprimaria);
+
+        Intent mIntent = new Intent();
+        mIntent.putExtra("id", -1);  // Devolvemos -1 indicant que s'ha eliminat
+        setResult(RESULT_OK, mIntent);
 
         finish();
     }
