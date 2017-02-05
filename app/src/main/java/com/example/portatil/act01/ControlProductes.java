@@ -64,7 +64,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
                 cancelar();
                 break;
             case R.id.btnDelete:
-                borrar(id);
+                borrar(task);
                 break;
         }
 
