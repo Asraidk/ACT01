@@ -37,6 +37,10 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         deletear.setOnClickListener(this);
         if(task==-1){
             deletear.setVisibility(View.GONE);
+            TextView tv;
+            tv = (TextView) findViewById(R.id.editboxStock);
+            tv.setText("0");
+            tv.setKeyListener(null);
 
         }
         if(id!=-1){
@@ -75,6 +79,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         tv = (TextView) findViewById(R.id.edtCodi);
         tv.setText(datos.getString(datos.getColumnIndex(MyOpenHelper.COLUMN_CODI)));
+        tv.setKeyListener(null);
 
         tv = (TextView) findViewById(R.id.edtDescripcion);
         tv.setText(datos.getString(datos.getColumnIndex(MyOpenHelper.COLUMN_DESCRIPCIO)));
@@ -119,7 +124,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
             PVP = Double.valueOf(tv.getText().toString());
         }
         catch (Exception e) {
-            toast =Toast.makeText(ControlProductes.this,"El camp codi te que ser obligatori", Toast.LENGTH_SHORT);
+            toast =Toast.makeText(ControlProductes.this,"El camp PVP te que ser un real format (nn.d)", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
@@ -131,7 +136,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
             stock = Integer.valueOf(tv.getText().toString());
         }
         catch (Exception e) {
-            toast =Toast.makeText(ControlProductes.this,"El camp codi te que ser obligatori", Toast.LENGTH_SHORT);
+            toast =Toast.makeText(ControlProductes.this,"El camp stock te que ser obligatori", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
@@ -160,15 +165,47 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         finish();
     }
 
-    private  void borrar(long clauprimaria){
+    private  void borrar(final long clauprimaria){
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("¿Desitja eliminar la tasca?");
+
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                bd.taskDelete(clauprimaria);
+
+                Intent mIntent = new Intent();
+                mIntent.putExtra("id", -1);  // Devolvemos -1 indicant que s'ha eliminat
+                setResult(RESULT_OK, mIntent);
+
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("No", null);
+
+        builder.show();
+
+
+
+
+
+
+
+
+
+
+
 
         // Pedimos confirmación
-        bd.taskDelete(clauprimaria);
+        /*bd.taskDelete(clauprimaria);
 
         Intent mIntent = new Intent();
         mIntent.putExtra("id", -1);  // Devolvemos -1 indicant que s'ha eliminat
         setResult(RESULT_OK, mIntent);
 
-        finish();
+        finish();*/
     }
 }

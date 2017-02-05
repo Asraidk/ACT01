@@ -28,7 +28,7 @@ public class LlistaProductes extends AppCompatActivity implements View.OnClickLi
 
 
     private static String[] from = new String[]{MyOpenHelper.COLUMN_CODI,MyOpenHelper.COLUMN_DESCRIPCIO,MyOpenHelper.COLUMN_PVP,MyOpenHelper.COLUMN_STOCK};
-    private static int[] to = new int[]{R.id.codi,R.id.descripcio,R.id.PVP,R.id.estoc};
+    private static int[] to = new int[]{R.id.codi,R.id.descripcio,/*R.id.PVP,*/R.id.estoc};
 
 
     @Override
@@ -46,10 +46,7 @@ public class LlistaProductes extends AppCompatActivity implements View.OnClickLi
 
             public void onItemClick(AdapterView<?> arg0, View vista, int posicion,
                                     long id) {
-
                 updateTask(id);
-
-
             }
 
         });
