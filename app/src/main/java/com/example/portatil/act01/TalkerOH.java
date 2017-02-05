@@ -19,10 +19,7 @@ public class TalkerOH {
         baseDadesLlegir= bdAjudant.getReadableDatabase();
         baseDadesEscriure=bdAjudant.getWritableDatabase();
     }
-
-    //per destruir
-
-
+//per tancar la comunicacio de la base de dades
     @Override
     protected void finalize(){
         baseDadesLlegir.close();
@@ -37,7 +34,7 @@ public class TalkerOH {
                 null, null,
                 null, null, bdAjudant.COLUMN_ID);
     }
-    //metode que retorna el valor de una sola row
+    //metode que retorna els valors de una sola row, aixo volr dir que busca la PK y torna la info dels camps de aquella PK
     public Cursor task(long id) {
         // Retorna un cursor només amb el id indicat
         // Retornem les tasques que el camp DONE = 1
@@ -46,8 +43,6 @@ public class TalkerOH {
                 null, null, null);
 
     }
-
-
 
     //METODES QUE SERVEIXEN PER MODIFICAR LA BASE DE DADES \\
 //metode que fa insert a la base de dades en la taula productes
@@ -62,8 +57,8 @@ public class TalkerOH {
 
         return baseDadesEscriure.insert(bdAjudant.TABLE_PRODUCTES,null,valors);
     }
-    //metode per fer updates dels camps que deixem que es puguin cambiar
-    public void taskUpdate(long id, String descripcio, double pvp , int stock) {
+    //metode per fer updates dels camps que deixem que es puguin cambiar mitjançant la PK de la row
+    public void ModificarProducte(long id, String descripcio, double pvp , int stock) {
         // Modifiquem els valors de las tasca amb clau primària "id"
         ContentValues valors = new ContentValues();
         valors.put(bdAjudant.COLUMN_DESCRIPCIO, descripcio);
@@ -72,8 +67,8 @@ public class TalkerOH {
 
         baseDadesEscriure.update(bdAjudant.TABLE_PRODUCTES,valors, bdAjudant.COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
     }
-
-    public void taskDelete(long id) {
+    //metode per eliminar una row atraves de la seva id=PK
+    public void ElminarProducte(long id) {
         // Eliminem la task amb clau primària "id"
         baseDadesEscriure.delete(bdAjudant.TABLE_PRODUCTES,bdAjudant.COLUMN_ID + " = ?", new String[] { String.valueOf(id) });
     }

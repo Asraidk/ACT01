@@ -17,17 +17,17 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
     private long task,id;
     private TalkerOH bd;
-    Toast toast ;
-
+    //en el on create instanciem tots el botons que necesitarem encara que estiguin o no visibles depenend
+    //de si venen a l'activytat perque volen fer updates a les row o afegir una nova
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_productes);
 
         bd=new TalkerOH(this);
-
+        TextView tv;//esencial per fer controls de tipus en la creacio per defecte el 0 y en modificar que el codi no es modificqui
         task = this.getIntent().getExtras().getLong("id");
-        id = this.getIntent().getExtras().getLong("id");
+
 
         Button ok=(Button) findViewById(R.id.btnOk);
         ok.setOnClickListener(this);
@@ -35,21 +35,25 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         cancelar.setOnClickListener(this);
         Button deletear=(Button) findViewById(R.id.btnDelete);
         deletear.setOnClickListener(this);
+        //si generem una nova row arriabra un -1 y mostrarem un el layout amb unes modificacions
+        //en canvi sino es -1 mostrarem altres modificacions del layout a mes tambe carregem dades
+        //si el que es vol es modificar camps
         if(task==-1){
             deletear.setVisibility(View.GONE);
-            TextView tv;
             tv = (TextView) findViewById(R.id.editboxStock);
             tv.setText("0");
             tv.setKeyListener(null);
 
         }
-        if(id!=-1){
+        if(task!=-1){
             deletear.setVisibility(View.VISIBLE);
+            tv = (TextView) findViewById(R.id.edtCodi);
+            tv.setKeyListener(null);
             cargarDatos();
         }
 
     }
-
+    //botons amb les seves accions em metodes
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -66,12 +70,12 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
 
     }
-
+    //metode per carregar tota la info de la base de dades en les row y view que te la listview
     private void cargarDatos() {
 
         // Demanem un cursor que retorna un sol registre amb les dades de la tasca
         // Això es podria fer amb un classe pero...
-        Cursor datos = bd.task(id);
+        Cursor datos = bd.task(task);
         datos.moveToFirst();
 
         // Carreguem les dades en la interfície
@@ -79,7 +83,6 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         tv = (TextView) findViewById(R.id.edtCodi);
         tv.setText(datos.getString(datos.getColumnIndex(MyOpenHelper.COLUMN_CODI)));
-        tv.setKeyListener(null);
 
         tv = (TextView) findViewById(R.id.edtDescripcion);
         tv.setText(datos.getString(datos.getColumnIndex(MyOpenHelper.COLUMN_DESCRIPCIO)));
@@ -89,21 +92,14 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         tv = (TextView) findViewById(R.id.editboxStock);
         tv.setText(datos.getString(datos.getColumnIndex(MyOpenHelper.COLUMN_STOCK)));
-
-
     }
 
-
-
-
+    //metode que afegira o fara ipdates a la bse de dades
     private void afegir() {
-        // Validem les dades
+        //declaracions per utilitzar
         TextView tv;
-
         Toast toast ;
-
-
-        // Títol ha d'estar informat
+        //camps del camp codi amb les seves restricions
         tv = (TextView) findViewById(R.id.edtCodi);
         String codi = tv.getText().toString();
         if (codi.trim().equals("")) {
@@ -113,13 +109,12 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
             return;
         }
-
+        //camp de la descripcio
         tv = (TextView) findViewById(R.id.edtDescripcion);
         String descripcion = tv.getText().toString();
         tv = (TextView) findViewById(R.id.editboxPVP);
+        //camp de el pvp
         double PVP;
-
-
         try {
             PVP = Double.valueOf(tv.getText().toString());
         }
@@ -128,10 +123,9 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
             toast.show();
             return;
         }
+        //camp del stock
         tv = (TextView) findViewById(R.id.editboxStock);
         Integer stock;
-
-
         try {
             stock = Integer.valueOf(tv.getText().toString());
         }
@@ -140,14 +134,12 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
             toast.show();
             return;
         }
-
-
-        // Mirem si estem creant o estem guardant
+        // Mirem si estem creant o estem guardant per fer cridar metode amb el insert o amb el upadte
         if (task == -1) {
             task = bd.AfegirProducte(codi, descripcion,PVP,stock);
         }
         else {
-            bd.taskUpdate(id,descripcion,PVP,stock);
+            bd.ModificarProducte(task,descripcion,PVP,stock);
         }
 
         Intent mIntent = new Intent();
@@ -156,17 +148,17 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         finish();
     }
-
+    //si toques el boton de cancelar es cridara aquest metode que retornara al activyti de la llista de productes y refrescara
     private void cancelar() {
         Intent mIntent = new Intent();
-        mIntent.putExtra("id", id);
+        mIntent.putExtra("id", task);
         setResult(RESULT_CANCELED, mIntent);
 
         finish();
     }
-
+    //metode cridat per eliminar les row que em selecionat previament al fer click en
+    //la listview mostrar la seva info y decidin si estas segur de fero(atraves de la id=pk)
     private  void borrar(final long clauprimaria){
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -174,7 +166,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                bd.taskDelete(clauprimaria);
+                bd.ElminarProducte(clauprimaria);
 
                 Intent mIntent = new Intent();
                 mIntent.putExtra("id", -1);  // Devolvemos -1 indicant que s'ha eliminat
@@ -185,27 +177,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         });
 
         builder.setNegativeButton("No", null);
-
         builder.show();
 
-
-
-
-
-
-
-
-
-
-
-
-        // Pedimos confirmación
-        /*bd.taskDelete(clauprimaria);
-
-        Intent mIntent = new Intent();
-        mIntent.putExtra("id", -1);  // Devolvemos -1 indicant que s'ha eliminat
-        setResult(RESULT_OK, mIntent);
-
-        finish();*/
     }
 }

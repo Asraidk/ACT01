@@ -27,6 +27,11 @@
             android:layout_height="wrap_content"
             android:text="Afegir producte"
             android:id="@+id/btnAfegir"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrar(descripcio)"
+            android:id="@+id/btnFiltrar"/>
 
     </LinearLayout>
 
