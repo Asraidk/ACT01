@@ -28,7 +28,6 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         TextView tv;//esencial per fer controls de tipus en la creacio per defecte el 0 y en modificar que el codi no es modificqui
         task = this.getIntent().getExtras().getLong("id");
 
-
         Button ok=(Button) findViewById(R.id.btnOk);
         ok.setOnClickListener(this);
         Button cancelar=(Button) findViewById(R.id.btnCancelar);
@@ -156,16 +155,15 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         finish();
     }
-    //metode cridat per eliminar les row que em selecionat previament al fer click en
-    //la listview mostrar la seva info y decidin si estas segur de fero(atraves de la id=pk)
+    //metode que al entrar desde el listview podras accionar amb el boto elliminar y treura la row de la
+    //base de dades y ja no es mostrara
     private  void borrar(final long clauprimaria){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("¿Desitja eliminar la tasca?");
 
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int task) {
                 bd.ElminarProducte(clauprimaria);
 
                 Intent mIntent = new Intent();
@@ -175,9 +173,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
                 finish();
             }
         });
-
         builder.setNegativeButton("No", null);
         builder.show();
-
     }
 }
