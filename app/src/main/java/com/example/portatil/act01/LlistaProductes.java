@@ -37,6 +37,8 @@ public class LlistaProductes extends AppCompatActivity implements View.OnClickLi
         afegir.setOnClickListener(this);
         Button filtar=(Button) findViewById(R.id.btnFiltrar);
         filtar.setOnClickListener(this);
+        Button senseFiltre=(Button) findViewById(R.id.senseFiltre);
+        senseFiltre.setOnClickListener(this);
 
         //part sobre els click en la list view per llançar un metode
         comunicador = new TalkerOH(this);
@@ -70,11 +72,27 @@ public class LlistaProductes extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnFiltrar:
 
-                //filtrarPerDescripcio();
+                filtrarPerDescripcio();
+                /*buscar maneras per poder fer un curso que retorne "" o un null no torbat*/
+                break;
+            case R.id.senseFiltre:
+                carregaCamps();
                 /*buscar maneras per poder fer un curso que retorne "" o un null no torbat*/
                 break;
         }
 
+
+    }
+
+    private void filtrarPerDescripcio() {
+        // Demanem totes les tasques pendents
+        Cursor cursorTasks = comunicador.filtre();
+
+        // Notifiquem al adapter que les dades han canviat i que refresqui
+        scTasks.changeCursor(cursorTasks);
+        scTasks.notifyDataSetChanged();
+
+        // Ens situem en el primer registre
 
     }
 

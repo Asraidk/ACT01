@@ -25,13 +25,20 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Afegir producte"
+            android:text="Afegir"
             android:id="@+id/btnAfegir"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Filtrar"
             android:id="@+id/btnFiltrar"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No filtrat"
+            android:id="@+id/senseFiltre"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

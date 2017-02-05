@@ -35,14 +35,20 @@ public class TalkerOH {
                 null, null, bdAjudant.COLUMN_ID);
     }
     //metode que retorna els valors de una sola row, aixo volr dir que busca la PK y torna la info dels camps de aquella PK
-    public Cursor task(long id) {
+    public Cursor carregaPerId(long id) {
         // Retorna un cursor només amb el id indicat
-        // Retornem les tasques que el camp DONE = 1
         return baseDadesLlegir.query(bdAjudant.TABLE_PRODUCTES, new String[]{bdAjudant.COLUMN_ID,bdAjudant.COLUMN_CODI,bdAjudant.COLUMN_DESCRIPCIO,bdAjudant.COLUMN_PVP,bdAjudant.COLUMN_STOCK},
                 bdAjudant.COLUMN_ID+ "=?", new String[]{String.valueOf(id)},
                 null, null, null);
 
     }
+    public Cursor filtre() {
+        // Retornem les tasques que el camp DONE = 0
+        return baseDadesLlegir.query(bdAjudant.TABLE_PRODUCTES, new String[]{bdAjudant.COLUMN_ID,bdAjudant.COLUMN_CODI,bdAjudant.COLUMN_DESCRIPCIO,bdAjudant.COLUMN_PVP,bdAjudant.COLUMN_STOCK},
+                bdAjudant.COLUMN_DESCRIPCIO+ "=?", new String[]{String.valueOf("")},
+                null, null, null);
+    }
+
 
     //METODES QUE SERVEIXEN PER MODIFICAR LA BASE DE DADES \\
 //metode que fa insert a la base de dades en la taula productes

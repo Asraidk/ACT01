@@ -74,7 +74,7 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
 
         // Demanem un cursor que retorna un sol registre amb les dades de la tasca
         // Això es podria fer amb un classe pero...
-        Cursor datos = bd.task(task);
+        Cursor datos = bd.carregaPerId(task);
         datos.moveToFirst();
 
         // Carreguem les dades en la interfície
