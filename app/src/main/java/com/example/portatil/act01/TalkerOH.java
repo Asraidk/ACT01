@@ -49,6 +49,13 @@ public class TalkerOH {
                 null, null, null);
     }
 
+    public Cursor codiRepetit(String codi) {
+        // Retornem les tasques que el camp DONE = 0
+        return baseDadesLlegir.query(bdAjudant.TABLE_PRODUCTES, new String[]{bdAjudant.COLUMN_ID,bdAjudant.COLUMN_CODI,bdAjudant.COLUMN_DESCRIPCIO,bdAjudant.COLUMN_PVP,bdAjudant.COLUMN_STOCK},
+                bdAjudant.COLUMN_CODI+ "=?", new String[]{String.valueOf(codi)},
+                null, null, null);
+    }
+
 
     //METODES QUE SERVEIXEN PER MODIFICAR LA BASE DE DADES \\
 //metode que fa insert a la base de dades en la taula productes

@@ -136,7 +136,13 @@ public class ControlProductes extends AppCompatActivity  implements View.OnClick
         }
         // Mirem si estem creant o estem guardant per fer cridar metode amb el insert o amb el upadte
         if (task == -1) {
-            task = bd.AfegirProducte(codi, descripcion,PVP,stock);
+
+            if(bd.codiRepetit(codi).getCount()!=0){
+                toast =Toast.makeText(ControlProductes.this,"Aquest codi ja esta a la base de dades", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }else{
+            task = bd.AfegirProducte(codi, descripcion,PVP,stock);}
         }
         else {
             bd.ModificarProducte(task,descripcion,PVP,stock);
